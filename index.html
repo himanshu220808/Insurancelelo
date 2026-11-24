@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsureGuard - Insurance Policy Management System</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230077B6' stroke-width='2'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/%3E%3C/svg%3E">
+    <link rel="alternate icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- ==========================================================================
+         LOGIN SCREEN
+         ========================================================================== -->
+    <section id="loginSection" class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-brand-icon">
+                    <svg class="svg-icon" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <h1>InsureGuard Enterprise</h1>
+                <p>Policy Management &amp; Claims Adjudication Portal</p>
+            </div>
+
+            <!-- Family Protection Visual Banner -->
+            <div style="border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); border: 1px solid #CBD5E1; position: relative;">
+                <img src="assets/family-insurance.jpg" onerror="this.onerror=null; this.src='assets/family-insurance.png';" alt="InsureGuard Family Protection" style="width: 100%; height: 145px; object-fit: cover; display: block;">
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(11,25,44,0.9) 0%, rgba(11,25,44,0) 100%); padding: 0.6rem 0.9rem; color: white;">
+                    <div style="font-size: 0.82rem; font-weight: 700;">Complete Family Protection • Plans starting from ₹450/month</div>
+                </div>
+            </div>
+
+            <!-- Demo Quick Login Buttons -->
+            <div class="demo-credentials-box">
+                <div class="demo-credentials-title">
+                    <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span>Instant Demo Account Sign-In</span>
+                </div>
+                <div class="demo-quick-buttons">
+                    <button type="button" class="btn-demo-quick" data-demo-role="admin">
+                        <strong>Admin</strong><br><span class="text-xs text-muted">admin / admin123</span>
+                    </button>
+                    <button type="button" class="btn-demo-quick" data-demo-role="agent">
+                        <strong>Agent</strong><br><span class="text-xs text-muted">agent / agent123</span>
+                    </button>
+                    <button type="button" class="btn-demo-quick" data-demo-role="customer">
+                        <strong>Customer</strong><br><span class="text-xs text-muted">customer / customer123</span>
+                    </button>
+                </div>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group" style="margin-bottom: 1.1rem;">
+                    <label class="form-label" for="loginUsername">Username / Role ID</label>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="e.g. admin, agent, customer" required value="admin">
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Enter password" required value="admin123">
+                </div>
+                <button type="submit" class="btn btn-primary w-full" style="padding: 0.75rem;">
+                    <span>Sign In to Dashboard</span>
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </form>
+            <div class="text-center text-xs text-muted" style="margin-top: 1.5rem;">
+                College Micro-Project • Client-Side LocalStorage Engine • Simulated Demo
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         APPLICATION SHELL
+         ========================================================================== -->
+    <div id="appContainer" class="app-container hidden">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-badge">
+                    <svg class="svg-icon" viewBox="0 0 24 24">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <div class="brand-info">
+                    <h2>InsureGuard</h2>
+                    <span>Enterprise System</span>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="nav-section-title">Portals &amp; Views</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-page="admin-dashboard">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                            <span>Admin Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="agent-dashboard">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            <span>Agent Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="customer-dashboard">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            <span>Customer Portal</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-title">Operations</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="customers">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+                            <span>Customers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="products">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="policies">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            <span>Policies</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="calculator">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+                            <span>Premium Calculator</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="payments">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                            <span>Payments</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="claims">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="m9 15 2 2 4-4"></path></svg>
+                            <span>Claims Management</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-title">System &amp; Verification</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="reports">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                            <span>Reports &amp; Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="system-testing">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            <span>System Testing</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="settings">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                            <span>Settings &amp; Backup</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Sidebar User Profile Footer -->
+            <div class="sidebar-footer">
+                <div class="user-profile-widget">
+                    <div id="userAvatar" class="user-avatar">AD</div>
+                    <div class="user-meta">
+                        <div id="userName" class="user-name">Arthur Vance</div>
+                        <span id="userRole" class="user-role-badge">Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- App Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <button id="mobileToggleBtn" class="mobile-toggle-btn" title="Toggle Navigation">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    </button>
+                    <div class="breadcrumb-trail">
+                        <span>Portal</span>
+                        <span style="opacity: 0.5;">/</span>
+                        <span id="headerPageTitle" class="current-page-title">Administrator Dashboard</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- Quick Role Switcher -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-muted font-semibold">Switch Role:</span>
+                        <select id="roleSwitcherSelect" class="role-switcher-dropdown" title="Quickly switch demo perspective">
+                            <option value="admin">Admin (Arthur Vance)</option>
+                            <option value="agent">Agent (Sarah Jenkins)</option>
+                            <option value="customer">Customer (David Miller)</option>
+                        </select>
+                    </div>
+
+                    <button id="logoutBtn" class="btn-header-action btn-logout" title="Sign out of system">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Content Container -->
+            <main class="main-content">
+
+                <!-- PRINT HEADER ONLY -->
+                <div class="print-only-header">
+                    <h1>InsureGuard Enterprise Management Report</h1>
+                    <p>Generated Official Summary Record • Confidential</p>
+                </div>
+
+                <!-- ==========================================
+                     1. ADMIN DASHBOARD VIEW
+                     ========================================== -->
+                <section id="page-admin-dashboard" class="page-view active">
+                    <!-- Home Family Protection Hero Banner -->
+                    <div class="home-hero-banner">
+                        <div class="home-hero-content">
+                            <div class="hero-badge">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                <span>Securing Over 50,000+ Indian Families</span>
+                            </div>
+                            <h1 class="hero-title">Protecting Your Family's Health, Life &amp; Prosperity</h1>
+                            <p class="hero-subtitle">
+                                Reliable insurance solutions designed to safeguard your family's future with complete peace of mind. Experience instant policy issuance, hassle-free renewals, and cashless hospitalizations across 10,000+ network facilities.
+                            </p>
+                            <div class="hero-highlights">
+                                <div class="highlight-item">
+                                    <span class="highlight-val">₹50+ Lakh</span>
+                                    <span class="highlight-lbl">Family Health Sum Assured</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <span class="highlight-val">10,000+</span>
+                                    <span class="highlight-lbl">Cashless Hospitals</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <span class="highlight-val">98.4%</span>
+                                    <span class="highlight-lbl">Claim Settlement Ratio</span>
+                                </div>
+                            </div>
+                            <div class="hero-actions">
+                                <button class="btn btn-accent" onclick="App.navigateTo('calculator')">
+                                    <svg class="svg-icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line></svg>
+                                    <span>Calculate Family Premium</span>
+                                </button>
+                                <button class="btn btn-outline" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.4);" onclick="App.navigateTo('products')">
+                                    <span>Explore Insurance Plans</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="home-hero-image-wrapper">
+                            <img src="assets/family-insurance.jpg" onerror="this.onerror=null; this.src='assets/family-insurance.png';" alt="Happy Protected Indian Family" class="home-hero-image">
+                            <div class="hero-image-floating-badge">
+                                <div class="floating-badge-icon">
+                                    <svg class="svg-icon" viewBox="0 0 24 24" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary-900);">100% Family Covered</div>
+                                    <div style="font-size: 0.68rem; color: var(--text-muted);">Active Protection Shield</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Executive Insurance Dashboard</h2>
+                            <p>Real-time policy portfolios, financial statistics, and claims adjudication metrics.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn btn-outline" onclick="App.navigateTo('reports')">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                <span>View Reports</span>
+                            </button>
+                            <button class="btn btn-primary" onclick="App.openCreatePolicyModal()">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>Issue New Policy</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Cards Grid (7 Prompt Required KPI Stats) -->
+                    <div class="stats-grid">
+                        <div class="stat-card stat-info">
+                            <div class="stat-icon-wrapper">
+                                <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                            </div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Total Customers</div>
+                                <div id="statTotalCustomers" class="stat-value">0</div>
+                                <div class="stat-subtext">Registered Policyholders</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-info">
+                            <div class="stat-icon-wrapper">
+                                <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                            </div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Total Policies</div>
+                                <div id="statTotalPolicies" class="stat-value">0</div>
+                                <div class="stat-subtext">Cumulative Active &amp; Lapsed</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-success">
+                            <div class="stat-icon-wrapper">
+                                <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Active Policies</div>
+                                <div id="statActivePolicies" class="stat-value">0</div>
+                                <div class="stat-subtext">In Good Standing</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-danger">
+                            <div class="stat-icon-wrapper">
+                                <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            </div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Expired Policies</div>
+                                <div id="statExpiredPolicies" class="stat-value">0</div>
+                                <div class="stat-subtext">Term Ended / Renew Pending</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-info">
+                            <div class="stat-icon-wrapper">
+                                <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="m9 15 2 2 4-4"></path></svg>
+                            </div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Total Claims</div>
+                                <div id="statTotalClaims" class="stat-value">0</div>
+                                <div class="stat-subtext">Lodged Across All Lines</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-warning">
+                            <div class="stat-icon-wrapper">
+                                <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            </div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Pending Claims</div>
+                                <div id="statPendingClaims" class="stat-value">0</div>
+                                <div class="stat-subtext">Awaiting Adjudication</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-success">
+                            <div class="stat-icon-wrapper">
+                                <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            </div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Premium Collected</div>
+                                <div id="statTotalPremium" class="stat-value">₹0</div>
+                                <div class="stat-subtext">Simulated Ledger Inflow</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Split Grid: Recent Claims & Audit Trail -->
+                    <div class="dashboard-split-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="m9 15 2 2 4-4"></path></svg>
+                                    <span>Recent Insurance Claims for Adjudication</span>
+                                </h3>
+                                <button class="btn btn-outline btn-sm" onclick="App.navigateTo('claims')">View All Claims</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Claim ID</th>
+                                            <th>Customer</th>
+                                            <th>Policy #</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminRecentClaimsBody">
+                                        <!-- Rendered via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                                    <span>System Activity Audit Trail</span>
+                                </h3>
+                            </div>
+                            <div class="card-body" style="padding-top: 0.5rem;">
+                                <div id="adminRecentActivities">
+                                    <!-- Rendered via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     2. AGENT DASHBOARD VIEW
+                     ========================================== -->
+                <section id="page-agent-dashboard" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Insurance Agent Workbench</h2>
+                            <p>Assigned portfolio, customer policy onboarding, and quote generation desk.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn btn-outline" onclick="App.navigateTo('calculator')">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line></svg>
+                                <span>Create Quotation</span>
+                            </button>
+                            <button class="btn btn-primary" onclick="App.openAddCustomerModal()">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+                                <span>Register Customer</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card stat-info">
+                            <div class="stat-icon-wrapper"><svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Assigned Customers</div>
+                                <div id="agentStatCustomers" class="stat-value">0</div>
+                                <div class="stat-subtext">Active Relationships</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-success">
+                            <div class="stat-icon-wrapper"><svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Managed Policies</div>
+                                <div id="agentStatPolicies" class="stat-value">0</div>
+                                <div class="stat-subtext">Policies in Portfolio</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-info">
+                            <div class="stat-icon-wrapper"><svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Generated Sales</div>
+                                <div id="agentStatSales" class="stat-value">₹0</div>
+                                <div class="stat-subtext">Annualized Premium</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-warning">
+                            <div class="stat-icon-wrapper"><svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="m9 15 2 2 4-4"></path></svg></div>
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Customer Claims</div>
+                                <div id="agentStatClaims" class="stat-value">0</div>
+                                <div class="stat-subtext">Under Supervision</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Managed Customer Policies</h3>
+                            <button class="btn btn-primary btn-sm" onclick="App.openCreatePolicyModal()">Issue Policy</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Policy #</th>
+                                        <th>Customer</th>
+                                        <th>Product</th>
+                                        <th>Premium</th>
+                                        <th>Expiry Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="agentPoliciesBody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     3. CUSTOMER DASHBOARD VIEW
+                     ========================================== -->
+                <section id="page-customer-dashboard" class="page-view">
+                    <!-- Customer Family Protection Mini Banner -->
+                    <div class="home-hero-banner" style="padding: 1.5rem 1.75rem; margin-bottom: 1.5rem;">
+                        <div class="home-hero-content">
+                            <div class="hero-badge" style="margin-bottom: 0.5rem;">
+                                <span>Family Protection Active</span>
+                            </div>
+                            <h3 class="hero-title" style="font-size: 1.35rem; margin-bottom: 0.4rem;">Your Family's Coverage is Safe &amp; Active</h3>
+                            <p class="hero-subtitle" style="font-size: 0.88rem; margin-bottom: 0.85rem;">
+                                Comprehensive family health and term protection is in good standing. Seamless 24x7 cashless assistance is active across 10,000+ network hospitals.
+                            </p>
+                            <div class="hero-actions">
+                                <button class="btn btn-accent btn-sm" onclick="App.openSubmitClaimModal()">Lodge Instant Claim</button>
+                                <button class="btn btn-outline btn-sm" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.4);" onclick="App.navigateTo('calculator')">Calculate Family Rider</button>
+                            </div>
+                        </div>
+                        <div class="home-hero-image-wrapper" style="max-width: 260px;">
+                            <img src="assets/family-insurance.jpg" onerror="this.onerror=null; this.src='assets/family-insurance.png';" alt="My Insured Family" class="home-hero-image" style="height: 160px;">
+                        </div>
+                    </div>
+
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Welcome back, <span id="custWelcomeName">David</span></h2>
+                            <p>Customer ID: <strong id="custHeaderId">CUST-1001</strong> • Your policy holdings and claims portal.</p>
+                        </div>
+                        <button class="btn btn-accent" onclick="App.openSubmitClaimModal()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="m9 15 2 2 4-4"></path></svg>
+                            <span>Lodge a Claim</span>
+                        </button>
+                    </div>
+
+                    <!-- Customer Quick Stats & Profile Grid -->
+                    <div class="dashboard-split-grid" style="margin-bottom: 1.5rem;">
+                        <div class="card" style="margin-bottom: 0;">
+                            <div class="card-header">
+                                <h3 class="card-title">My Insured Profile</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-grid">
+                                    <div><span class="text-xs text-muted">Full Legal Name</span><div id="custProfileName" class="font-semibold">-</div></div>
+                                    <div><span class="text-xs text-muted">Email Address</span><div id="custProfileEmail" class="font-semibold">-</div></div>
+                                    <div><span class="text-xs text-muted">Phone Number</span><div id="custProfilePhone" class="font-semibold">-</div></div>
+                                    <div><span class="text-xs text-muted">Date of Birth</span><div id="custProfileDob" class="font-semibold">-</div></div>
+                                    <div class="col-span-full"><span class="text-xs text-muted">Registered Residence</span><div id="custProfileAddress" class="font-semibold">-</div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <div class="stat-card stat-success" style="margin-bottom: 0;">
+                                <div class="stat-icon-wrapper"><svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                                <div class="stat-info-wrapper">
+                                    <div class="stat-label">Active Policies</div>
+                                    <div id="custStatActive" class="stat-value">0</div>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-info" style="margin-bottom: 0;">
+                                <div class="stat-icon-wrapper"><svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div>
+                                <div class="stat-info-wrapper">
+                                    <div class="stat-label">Total Held Policies</div>
+                                    <div id="custStatPolicies" class="stat-value">0</div>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-warning" style="margin-bottom: 0;">
+                                <div class="stat-icon-wrapper"><svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="m9 15 2 2 4-4"></path></svg></div>
+                                <div class="stat-info-wrapper">
+                                    <div class="stat-label">Claims Filed</div>
+                                    <div id="custStatClaims" class="stat-value">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Policies Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">My Insurance Policies</h3>
+                            <button class="btn btn-outline btn-sm" onclick="App.navigateTo('calculator')">Explore New Plans</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Policy #</th>
+                                        <th>Product Name</th>
+                                        <th>Coverage</th>
+                                        <th>Annual Premium</th>
+                                        <th>Expiry Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="custPoliciesBody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Customer Claims Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">My Claims History &amp; Status</h3>
+                            <button class="btn btn-primary btn-sm" onclick="App.openSubmitClaimModal()">Submit New Claim</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Claim ID</th>
+                                        <th>Policy #</th>
+                                        <th>Claim Nature</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="custClaimsBody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     4. CUSTOMERS MANAGEMENT VIEW
+                     ========================================== -->
+                <section id="page-customers" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Customer Registry</h2>
+                            <p>Comprehensive customer directory, demographic profiles, and linked insurance records.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="App.openAddCustomerModal()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+                            <span>Add New Customer</span>
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" style="padding: 1rem 1.5rem;">
+                            <div class="filter-bar w-full" style="margin-bottom: 0;">
+                                <div class="search-input-wrapper">
+                                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    <input type="text" id="customerSearchInput" class="search-input" placeholder="Search by name, ID, email, or phone..." oninput="App.renderCustomersTable()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Customer ID</th>
+                                        <th>Full Name &amp; DOB</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customersTableBody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     5. PRODUCT MANAGEMENT VIEW
+                     ========================================== -->
+                <section id="page-products" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Insurance Product Portfolio</h2>
+                            <p>Catalog of Life, Health, and Vehicle insurance policies and sum assured plans.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="App.openAddProductModal()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <span>Add Insurance Product</span>
+                        </button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <select id="productCategoryFilter" class="filter-select" onchange="App.renderProductsGrid()">
+                            <option value="All">All Categories (Life, Health, Vehicle)</option>
+                            <option value="Life">Life Insurance</option>
+                            <option value="Health">Health Insurance</option>
+                            <option value="Vehicle">Vehicle Insurance</option>
+                        </select>
+                    </div>
+
+                    <div id="productsContainer" class="products-grid">
+                        <!-- Rendered via JS -->
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     6. POLICY MANAGEMENT VIEW
+                     ========================================== -->
+                <section id="page-policies" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Policy Administration</h2>
+                            <p>Create, track, renew, and adjudicate policy terms and expiration statuses.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="App.openCreatePolicyModal()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <span>Create New Policy</span>
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" style="padding: 1rem 1.5rem;">
+                            <div class="filter-bar w-full" style="margin-bottom: 0;">
+                                <div class="search-input-wrapper">
+                                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    <input type="text" id="policySearchInput" class="search-input" placeholder="Search by policy number, customer, or plan..." oninput="App.renderPoliciesTable()">
+                                </div>
+                                <select id="policyStatusFilter" class="filter-select" onchange="App.renderPoliciesTable()">
+                                    <option value="All">All Statuses</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Renewed">Renewed</option>
+                                    <option value="Expired">Expired</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                                <select id="policyCategoryFilter" class="filter-select" onchange="App.renderPoliciesTable()">
+                                    <option value="All">All Lines</option>
+                                    <option value="Life">Life</option>
+                                    <option value="Health">Health</option>
+                                    <option value="Vehicle">Vehicle</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Policy Number</th>
+                                        <th>Customer</th>
+                                        <th>Insurance Product</th>
+                                        <th>Coverage</th>
+                                        <th>Premium</th>
+                                        <th>Expiry Timeline</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="policiesTableBody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     7. PREMIUM CALCULATOR VIEW
+                     ========================================== -->
+                <section id="page-calculator" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Smart Premium Calculator</h2>
+                            <p>Instant actuarial quote calculator with interactive coverage limits, term, and add-on riders.</p>
+                        </div>
+                    </div>
+
+                    <div class="calc-layout">
+                        <!-- Input Controls Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Configure Policy Parameters</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="calcForm" oninput="App.calculatePremiumLive()">
+                                    <div class="form-grid" style="margin-bottom: 1.25rem;">
+                                        <div class="form-group">
+                                            <label class="form-label" for="calcCategory">Insurance Line</label>
+                                            <select id="calcCategory" class="form-control" onchange="App.calculatePremiumLive()">
+                                                <option value="Life">Life Insurance</option>
+                                                <option value="Health">Health Insurance</option>
+                                                <option value="Vehicle">Vehicle Insurance</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="calcCoverage">Coverage Limit (Sum Assured)</label>
+                                            <select id="calcCoverage" class="form-control" onchange="App.calculatePremiumLive()">
+                                                <option value="25000">₹25,000</option>
+                                                <option value="50000">₹50,000</option>
+                                                <option value="100000" selected>₹1,00,000</option>
+                                                <option value="250000">₹2,50,000</option>
+                                                <option value="500000">₹5,00,000</option>
+                                                <option value="1000000">₹10,00,000</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="calcDuration">Policy Duration</label>
+                                            <select id="calcDuration" class="form-control" onchange="App.calculatePremiumLive()">
+                                                <option value="1">1 Year Term</option>
+                                                <option value="3">3 Years (Multi-Year Discount)</option>
+                                                <option value="5">5 Years (10% Term Discount)</option>
+                                                <option value="10">10 Years (15% Term Discount)</option>
+                                                <option value="20">20 Years (20% Max Discount)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="calcAge">Applicant Age</label>
+                                            <input type="number" id="calcAge" class="form-control" min="18" max="85" value="32" oninput="App.calculatePremiumLive()">
+                                            <span class="form-hint">Risk factor adjusts with age bracket.</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                                        <label class="form-label">Available Add-On Riders</label>
+                                        <div class="flex flex-col gap-2" style="margin-top: 0.25rem;">
+                                            <label class="flex items-center gap-2" style="cursor: pointer;">
+                                                <input type="checkbox" id="calcAddonAccidental" onchange="App.calculatePremiumLive()">
+                                                <span>Accidental Death &amp; Dismemberment Rider (+₹45/yr)</span>
+                                            </label>
+                                            <label class="flex items-center gap-2" style="cursor: pointer;">
+                                                <input type="checkbox" id="calcAddonCritical" onchange="App.calculatePremiumLive()">
+                                                <span>Critical Illness Payout Guard (+₹65/yr)</span>
+                                            </label>
+                                            <label class="flex items-center gap-2" style="cursor: pointer;">
+                                                <input type="checkbox" id="calcAddonZeroDep" onchange="App.calculatePremiumLive()">
+                                                <span>Zero Depreciation Bumper-to-Bumper (+₹75/yr)</span>
+                                            </label>
+                                            <label class="flex items-center gap-2" style="cursor: pointer;">
+                                                <input type="checkbox" id="calcAddonRoadside" onchange="App.calculatePremiumLive()">
+                                                <span>24x7 Roadside Assistance &amp; Towing (+₹25/yr)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Quote Summary Card -->
+                        <div class="calc-summary-card">
+                            <div class="calc-summary-title">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <span>Estimated Premium Quote</span>
+                            </div>
+
+                            <div class="calc-total-box">
+                                <div id="calcTotalPremiumDisplay" class="calc-total-val">₹0</div>
+                                <div id="calcMonthlyDisplay" class="calc-total-sub">or ~₹0/month</div>
+                            </div>
+
+                            <ul class="calc-breakdown-list">
+                                <li class="calc-breakdown-item">
+                                    <span>Base Policy Rate</span>
+                                    <strong id="calcBreakdownBase">₹0</strong>
+                                </li>
+                                <li class="calc-breakdown-item">
+                                    <span>Coverage Sum Multiplier</span>
+                                    <strong id="calcBreakdownCoverage">₹0</strong>
+                                </li>
+                                <li class="calc-breakdown-item">
+                                    <span>Age Risk Multiplier</span>
+                                    <strong id="calcBreakdownAgeFactor">x1.0</strong>
+                                </li>
+                                <li class="calc-breakdown-item">
+                                    <span>Duration Multi-Year Discount</span>
+                                    <strong id="calcBreakdownDiscount">-0%</strong>
+                                </li>
+                                <li class="calc-breakdown-item">
+                                    <span>Selected Add-On Riders</span>
+                                    <strong id="calcBreakdownAddons">+₹0</strong>
+                                </li>
+                                <li class="calc-breakdown-item">
+                                    <span>Statutory Tax &amp; Regulatory Fees (5%)</span>
+                                    <strong id="calcBreakdownTax">+₹0</strong>
+                                </li>
+                            </ul>
+
+                            <button class="btn btn-accent w-full" style="padding: 0.75rem;" onclick="App.applyQuoteToPolicy()">
+                                <span>Convert Quote to New Policy</span>
+                                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+
+                            <div class="calc-disclaimer">
+                                Note: This calculation is for demonstration and academic evaluation purposes only. No actual underwriting commitment is established.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     8. PAYMENT MANAGEMENT VIEW
+                     ========================================== -->
+                <section id="page-payments" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Billing &amp; Payments Ledger</h2>
+                            <p>Track premium transactions, simulated payments, receipts, and collection statuses.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="App.openRecordPaymentModal()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                            <span>Record Demo Payment</span>
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" style="padding: 1rem 1.5rem;">
+                            <div class="filter-bar w-full" style="margin-bottom: 0;">
+                                <div class="search-input-wrapper">
+                                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    <input type="text" id="paymentSearchInput" class="search-input" placeholder="Search by payment ID, policy #, customer, or transaction ref..." oninput="App.renderPaymentsTable()">
+                                </div>
+                                <select id="paymentStatusFilter" class="filter-select" onchange="App.renderPaymentsTable()">
+                                    <option value="All">All Payment Statuses</option>
+                                    <option value="Successful">Successful</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Failed">Failed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Payment ID</th>
+                                        <th>Policy / Customer</th>
+                                        <th>Amount</th>
+                                        <th>Payment Date</th>
+                                        <th>Method &amp; Ref</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentsTableBody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     9. CLAIMS PROCESSING MODULE VIEW
+                     ========================================== -->
+                <section id="page-claims" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Claims Adjudication Center</h2>
+                            <p>Multi-stage claim lifecycle: Submission &rarr; Review &rarr; Approval &rarr; Settlement.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="App.openSubmitClaimModal()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="m9 15 2 2 4-4"></path></svg>
+                            <span>Lodge New Claim</span>
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" style="padding: 1rem 1.5rem;">
+                            <div class="filter-bar w-full" style="margin-bottom: 0;">
+                                <div class="search-input-wrapper">
+                                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    <input type="text" id="claimSearchInput" class="search-input" placeholder="Search by claim ID, customer, policy, or incident..." oninput="App.renderClaimsTable()">
+                                </div>
+                                <select id="claimStatusFilter" class="filter-select" onchange="App.renderClaimsTable()">
+                                    <option value="All">All Claim Statuses</option>
+                                    <option value="Submitted">Submitted</option>
+                                    <option value="Under Review">Under Review</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Settled">Settled</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Claim ID</th>
+                                        <th>Policy / Customer</th>
+                                        <th>Claim Type</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Remarks / Ref</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="claimsTableBody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     10. REPORTS AND ANALYTICS VIEW
+                     ========================================== -->
+                <section id="page-reports" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>Business Analytics &amp; Reports</h2>
+                            <p>Aggregated metrics, loss ratios, collection performance, and distribution charts.</p>
+                        </div>
+                        <button class="btn btn-outline" onclick="Reports.printReport()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                            <span>Print Report</span>
+                        </button>
+                    </div>
+
+                    <!-- Summary KPI Bar -->
+                    <div class="stats-grid">
+                        <div class="stat-card stat-success">
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Total Premium Collected</div>
+                                <div id="repTotalPremium" class="stat-value">₹0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-info">
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Active Policies Ratio</div>
+                                <div id="repActivePolicies" class="stat-value">0 of 0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-warning">
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Claim Approval Rate</div>
+                                <div id="repSettlementRate" class="stat-value">0%</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-danger">
+                            <div class="stat-info-wrapper">
+                                <div class="stat-label">Claims Disbursed</div>
+                                <div id="repTotalClaimsPaid" class="stat-value">₹0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid">
+                        <div class="chart-box">
+                            <div class="chart-header">
+                                <h4 class="chart-title">Premium Revenue by Insurance Category</h4>
+                            </div>
+                            <div id="reportCategoryBars" class="bar-chart-container">
+                                <!-- Rendered via JS -->
+                            </div>
+                        </div>
+
+                        <div class="chart-box">
+                            <div class="chart-header">
+                                <h4 class="chart-title">Claims Adjudication Status Distribution</h4>
+                            </div>
+                            <div id="reportClaimStatusBars" class="bar-chart-container">
+                                <!-- Rendered via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     11. SYSTEM TESTING VIEW (Milestone 4)
+                     ========================================== -->
+                <section id="page-system-testing" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>System Verification &amp; Test Suite</h2>
+                            <p>Automated verification tests covering validations, business logic, persistence, and duplicate protection.</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span id="testSummaryPassBadge" class="badge badge-active" style="padding: 0.5rem 0.85rem; font-size: 0.85rem;">8 of 8 Passed</span>
+                            <button class="btn btn-primary" onclick="App.runSystemTests()">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                <span>Run System Tests</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Test ID</th>
+                                        <th>Test Scenario &amp; Scope</th>
+                                        <th>Category</th>
+                                        <th>Expected Specification</th>
+                                        <th>Actual Test Outcome</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="systemTestsTableBody">
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================
+                     12. SETTINGS VIEW
+                     ========================================== -->
+                <section id="page-settings" class="page-view">
+                    <div class="page-header-row">
+                        <div class="page-heading">
+                            <h2>System Settings &amp; Data Management</h2>
+                            <p>Manage demo authentication session, LocalStorage persistence, and database backups.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-split-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Demo Persistence Engine</h3>
+                            </div>
+                            <div class="card-body">
+                                <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">
+                                    All system entities (customers, policies, products, payments, claims, and activity logs) are stored directly in your browser's <code>window.localStorage</code>. Changes persist across reloads and tab closures.
+                                </p>
+                                <div class="alert" style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid #CBD5E1; margin-bottom: 1.5rem;">
+                                    <strong>Current Storage Footprint:</strong>
+                                    <div id="settingsStorageStats" class="text-sm text-muted" style="margin-top: 0.25rem;">Calculating...</div>
+                                </div>
+
+                                <div class="flex gap-3 flex-wrap">
+                                    <button class="btn btn-outline" onclick="App.exportDataBackup()">
+                                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                        <span>Export JSON Backup</span>
+                                    </button>
+
+                                    <label class="btn btn-outline" style="cursor: pointer;">
+                                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                        <span>Import JSON Backup</span>
+                                        <input type="file" accept=".json" style="display: none;" onchange="App.importDataBackup(event)">
+                                    </label>
+
+                                    <button class="btn btn-danger" onclick="App.resetSystemData()">
+                                        <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                                        <span>Reset Demo Data</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Session Profile</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-grid-1" style="gap: 1rem;">
+                                    <div><span class="text-xs text-muted">Role</span><div id="settingsUserRole" class="font-semibold">-</div></div>
+                                    <div><span class="text-xs text-muted">Logged In User</span><div id="settingsUserName" class="font-semibold">-</div></div>
+                                    <div><span class="text-xs text-muted">System Email</span><div id="settingsUserEmail" class="font-semibold">-</div></div>
+                                    <div>
+                                        <span class="text-xs text-muted">Client Environment</span>
+                                        <div class="font-semibold">HTML5 / CSS3 / Vanilla JavaScript</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         MODALS DIALOGS
+         ========================================================================== -->
+
+    <!-- CUSTOMER ADD / EDIT MODAL -->
+    <div id="customerModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="customerModalTitle">Register New Customer</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('customerModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form onsubmit="App.saveCustomerForm(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="customerFormId">
+                    <div class="form-grid">
+                        <div class="form-group col-span-full">
+                            <label class="form-label" for="customerFullName">Full Legal Name <span class="required">*</span></label>
+                            <input type="text" id="customerFullName" class="form-control" required placeholder="e.g. John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="customerEmail">Email Address <span class="required">*</span></label>
+                            <input type="email" id="customerEmail" class="form-control" required placeholder="e.g. john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="customerPhone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="customerPhone" class="form-control" required placeholder="+1 (555) 000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="customerDob">Date of Birth <span class="required">*</span></label>
+                            <input type="date" id="customerDob" class="form-control" required>
+                        </div>
+                        <div class="form-group col-span-full">
+                            <label class="form-label" for="customerAddress">Residential Address <span class="required">*</span></label>
+                            <textarea id="customerAddress" class="form-control" required placeholder="Street address, City, State, ZIP"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="App.closeModal('customerModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CUSTOMER DETAILS MODAL (WITH POLICIES & CLAIMS) -->
+    <div id="customerDetailsModal" class="modal-overlay">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <h3>Customer Complete Profile</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('customerDetailsModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid" style="background: var(--bg-subtle); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                    <div><span class="text-xs text-muted">Customer Name</span><div id="viewCustName" class="font-bold text-primary">-</div></div>
+                    <div><span class="text-xs text-muted">Customer ID</span><div id="viewCustId" class="font-semibold">-</div></div>
+                    <div><span class="text-xs text-muted">Email</span><div id="viewCustEmail">-</div></div>
+                    <div><span class="text-xs text-muted">Phone</span><div id="viewCustPhone">-</div></div>
+                    <div><span class="text-xs text-muted">Date of Birth</span><div id="viewCustDob">-</div></div>
+                    <div><span class="text-xs text-muted">Registration Date</span><div id="viewCustRegistered">-</div></div>
+                    <div class="col-span-full"><span class="text-xs text-muted">Address</span><div id="viewCustAddress">-</div></div>
+                </div>
+
+                <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;">Associated Policies</h4>
+                <div class="table-responsive" style="margin-bottom: 1.5rem;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Policy #</th>
+                                <th>Product</th>
+                                <th>Premium</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="viewCustPoliciesBody"></tbody>
+                    </table>
+                </div>
+
+                <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;">Filed Claims</h4>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Claim ID</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="viewCustClaimsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="App.closeModal('customerDetailsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT ADD / EDIT MODAL -->
+    <div id="productModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="productModalTitle">Add Insurance Product</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('productModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form onsubmit="App.saveProductForm(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="productFormId">
+                    <div class="form-grid">
+                        <div class="form-group col-span-full">
+                            <label class="form-label" for="productName">Product Name <span class="required">*</span></label>
+                            <input type="text" id="productName" class="form-control" required placeholder="e.g. Comprehensive Term Life">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="productCategory">Category <span class="required">*</span></label>
+                            <select id="productCategory" class="form-control" required>
+                                <option value="Life">Life</option>
+                                <option value="Health">Health</option>
+                                <option value="Vehicle">Vehicle</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="productCoverage">Standard Coverage (₹) <span class="required">*</span></label>
+                            <input type="number" id="productCoverage" class="form-control" required min="1000" step="500">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="productBasePremium">Base Premium (₹/yr) <span class="required">*</span></label>
+                            <input type="number" id="productBasePremium" class="form-control" required min="10" step="10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="productDuration">Standard Duration (Years) <span class="required">*</span></label>
+                            <input type="number" id="productDuration" class="form-control" required min="1" max="50">
+                        </div>
+                        <div class="form-group col-span-full">
+                            <label class="form-label" for="productDescription">Product Description <span class="required">*</span></label>
+                            <textarea id="productDescription" class="form-control" required placeholder="Summary of coverage and highlights..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="App.closeModal('productModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CREATE POLICY MODAL -->
+    <div id="createPolicyModal" class="modal-overlay">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <h3>Issue New Insurance Policy</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('createPolicyModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form onsubmit="App.saveNewPolicy(event)">
+                <div class="modal-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="newPolicyCustomerId">Select Customer <span class="required">*</span></label>
+                            <select id="newPolicyCustomerId" class="form-control" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="newPolicyProductId">Insurance Product <span class="required">*</span></label>
+                            <select id="newPolicyProductId" class="form-control" required onchange="App.updatePolicyModalValues()"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="newPolicyStartDate">Policy Start Date <span class="required">*</span></label>
+                            <input type="date" id="newPolicyStartDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="newPolicyDuration">Duration (Years) <span class="required">*</span></label>
+                            <input type="number" id="newPolicyDuration" class="form-control" min="1" max="40" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="newPolicyCoverage">Coverage Amount (₹) <span class="required">*</span></label>
+                            <input type="number" id="newPolicyCoverage" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="newPolicyPremium">Annual Premium (₹) <span class="required">*</span></label>
+                            <input type="number" id="newPolicyPremium" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="newPolicyPaymentMethod">Demo Payment Method <span class="required">*</span></label>
+                            <select id="newPolicyPaymentMethod" class="form-control">
+                                <option value="Credit Card">Credit Card (Simulated)</option>
+                                <option value="Debit Card">Debit Card (Simulated)</option>
+                                <option value="UPI">UPI / QR (Simulated)</option>
+                                <option value="Net Banking">Net Banking (Simulated)</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-span-full">
+                            <label class="form-label" for="newPolicyNotes">Policy Notes / Nominee</label>
+                            <textarea id="newPolicyNotes" class="form-control" placeholder="e.g. Nominee details, Vehicle registration VIN, special endorsements..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="App.closeModal('createPolicyModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Generate Policy &amp; Bind Cover</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RENEW POLICY MODAL -->
+    <div id="renewPolicyModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Renew Insurance Policy</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('renewPolicyModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form onsubmit="App.executePolicyRenewal(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="renewPolicyNumber">
+                    <div class="form-grid-1" style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; gap: 0.5rem;">
+                        <div><span class="text-xs text-muted">Customer</span>: <strong id="renewCustName">-</strong></div>
+                        <div><span class="text-xs text-muted">Product</span>: <strong id="renewProdName">-</strong></div>
+                        <div><span class="text-xs text-muted">Current Expiration Date</span>: <strong id="renewCurrentExpiry">-</strong></div>
+                        <div><span class="text-xs text-muted">Renewal Premium</span>: <strong id="renewPremiumAmount" style="color: var(--success-solid);">-</strong></div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="renewDurationYears">Renewal Extension Term</label>
+                        <select id="renewDurationYears" class="form-control">
+                            <option value="1">1 Year Extension</option>
+                            <option value="2">2 Years Extension</option>
+                            <option value="3">3 Years Extension</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="renewPaymentMethod">Select Simulated Payment Method</label>
+                        <select id="renewPaymentMethod" class="form-control">
+                            <option value="UPI">Instant UPI</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Net Banking">Net Banking</option>
+                            <option value="Debit Card">Debit Card</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="App.closeModal('renewPolicyModal')">Cancel</button>
+                    <button type="submit" class="btn btn-accent">Confirm Renewal &amp; Pay</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- POLICY DETAILS MODAL -->
+    <div id="policyDetailsModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Policy Information</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('policyDetailsModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid" style="gap: 1.25rem;">
+                    <div><span class="text-xs text-muted">Policy Number</span><div id="detPolNumber" class="font-bold text-primary">-</div></div>
+                    <div><span class="text-xs text-muted">Status</span><div id="detPolStatus">-</div></div>
+                    <div><span class="text-xs text-muted">Customer</span><div id="detPolCustomer" class="font-semibold">-</div></div>
+                    <div><span class="text-xs text-muted">Insurance Product</span><div id="detPolProduct" class="font-semibold">-</div></div>
+                    <div><span class="text-xs text-muted">Coverage Limit</span><div id="detPolCoverage" class="font-semibold">-</div></div>
+                    <div><span class="text-xs text-muted">Annual Premium</span><div id="detPolPremium" class="font-semibold">-</div></div>
+                    <div><span class="text-xs text-muted">Start Date</span><div id="detPolStart">-</div></div>
+                    <div><span class="text-xs text-muted">Expiry Date</span><div id="detPolExpiry">-</div></div>
+                    <div class="col-span-full"><span class="text-xs text-muted">Policy Endorsement Notes</span><div id="detPolNotes" style="font-size: 0.88rem; margin-top: 0.25rem;">-</div></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="App.closeModal('policyDetailsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUBMIT CLAIM MODAL -->
+    <div id="submitClaimModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Lodge Insurance Claim</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('submitClaimModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form onsubmit="App.submitClaimForm(event)">
+                <div class="modal-body">
+                    <div class="form-group" style="margin-bottom: 1.25rem;">
+                        <label class="form-label" for="claimPolicySelect">Target Active Policy <span class="required">*</span></label>
+                        <select id="claimPolicySelect" class="form-control" required></select>
+                        <span class="form-hint">System verifies policy validity and eligibility automatically.</span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.25rem;">
+                        <label class="form-label" for="claimTypeInput">Nature of Claim <span class="required">*</span></label>
+                        <select id="claimTypeInput" class="form-control" required>
+                            <option value="Accidental Vehicle Damage">Accidental Vehicle Damage</option>
+                            <option value="Hospitalization & Daycare">Hospitalization & Daycare</option>
+                            <option value="Critical Illness Diagnosis">Critical Illness Diagnosis</option>
+                            <option value="Theft or Total Loss">Theft or Total Loss</option>
+                            <option value="Routine Health Rider">Routine Health Rider</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.25rem;">
+                        <label class="form-label" for="claimAmountInput">Claimed Amount (₹) <span class="required">*</span></label>
+                        <input type="number" id="claimAmountInput" class="form-control" min="1" required placeholder="e.g. 1500">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="claimDescInput">Incident Description &amp; Circumstances <span class="required">*</span></label>
+                        <textarea id="claimDescInput" class="form-control" required placeholder="Describe event, location, hospital/garage name, invoice numbers..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="App.closeModal('submitClaimModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Claim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CLAIM REVIEW & SETTLEMENT MODAL (ADMIN / AGENT) -->
+    <div id="claimReviewModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Claim Adjudication &amp; Settlement</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('claimReviewModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form onsubmit="App.saveClaimReview(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="revClaimHiddenId">
+                    <div class="form-grid" style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
+                        <div><span class="text-xs text-muted">Claim Reference</span><div id="revClaimId" class="font-bold text-primary">-</div></div>
+                        <div><span class="text-xs text-muted">Policy Number</span><div id="revPolicyNumber" class="font-semibold">-</div></div>
+                        <div><span class="text-xs text-muted">Claimant</span><div id="revCustName">-</div></div>
+                        <div><span class="text-xs text-muted">Claimed Amount</span><div id="revClaimAmount" class="font-bold">-</div></div>
+                        <div class="col-span-full"><span class="text-xs text-muted">Claim Type</span><div id="revClaimType">-</div></div>
+                        <div class="col-span-full"><span class="text-xs text-muted">Incident Description</span><div id="revClaimDesc" class="text-xs">-</div></div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="revStatusSelect">Adjudication Status Decision</label>
+                        <select id="revStatusSelect" class="form-control" onchange="document.getElementById('revSettleBtn').classList.toggle('hidden', this.value !== 'Approved')">
+                            <option value="Submitted">Submitted (Under Initial Intake)</option>
+                            <option value="Under Review">Under Review (Surveyor / Doctor In Progress)</option>
+                            <option value="Approved">Approved (Authorization Cleared)</option>
+                            <option value="Rejected">Rejected (Claim Disallowed)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="revApprovedAmount">Approved Payout Amount (₹)</label>
+                        <input type="number" id="revApprovedAmount" class="form-control" min="0">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="revRemarks">Adjudicator / Surveyor Remarks</label>
+                        <textarea id="revRemarks" class="form-control" placeholder="Provide notes regarding approval, surveyor findings, or rejection reasons..."></textarea>
+                    </div>
+
+                    <!-- Direct Settlement Action for Approved Claims -->
+                    <div id="revSettleBtn" class="hidden" style="background: var(--success-bg); border: 1px solid var(--success-border); padding: 1rem; border-radius: var(--radius-sm); margin-top: 1rem;">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <strong style="color: var(--success-text);">Ready for Settlement</strong>
+                                <div class="text-xs" style="color: var(--success-text);">Disburse authorized payout and generate unique Settlement Reference.</div>
+                            </div>
+                            <button type="button" class="btn btn-success btn-sm" onclick="App.triggerDirectSettlement()">Disburse Settlement</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="App.closeModal('claimReviewModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Decision</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CLAIM DETAILS & TIMELINE MODAL -->
+    <div id="claimDetailsModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Claim Lifecycle Tracking</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('claimDetailsModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid" style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
+                    <div><span class="text-xs text-muted">Claim ID</span><div id="viewClaimId" class="font-bold text-primary">-</div></div>
+                    <div><span class="text-xs text-muted">Current Status</span><div id="viewClaimStatus">-</div></div>
+                    <div><span class="text-xs text-muted">Policy #</span><div id="viewClaimPolicy" class="font-semibold">-</div></div>
+                    <div><span class="text-xs text-muted">Claimant</span><div id="viewClaimCustomer">-</div></div>
+                    <div><span class="text-xs text-muted">Filing Date</span><div id="viewClaimDate">-</div></div>
+                    <div><span class="text-xs text-muted">Claimed Sum</span><div id="viewClaimAmount" class="font-semibold">-</div></div>
+                    <div><span class="text-xs text-muted">Settlement Ref</span><div id="viewClaimSettlement" class="font-bold">-</div></div>
+                    <div><span class="text-xs text-muted">Category</span><div id="viewClaimType">-</div></div>
+                    <div class="col-span-full"><span class="text-xs text-muted">Claim Notes</span><div id="viewClaimDesc" class="text-xs">-</div></div>
+                    <div class="col-span-full"><span class="text-xs text-muted">Admin / Surveyor Remarks</span><div id="viewClaimRemarks" class="text-xs font-semibold">-</div></div>
+                </div>
+
+                <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;">Audit &amp; Status Timeline</h4>
+                <div id="claimHistoryTimeline" class="timeline"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="App.closeModal('claimDetailsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECORD PAYMENT MODAL -->
+    <div id="recordPaymentModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Record Simulated Demo Payment</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('recordPaymentModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form onsubmit="App.saveSimulatedPayment(event)">
+                <div class="modal-body">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="recordPaymentPolicySelect">Select Policy <span class="required">*</span></label>
+                        <select id="recordPaymentPolicySelect" class="form-control" required onchange="App.updatePaymentModalValues()"></select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="recordPaymentCustName">Customer</label>
+                        <input type="text" id="recordPaymentCustName" class="form-control" readonly>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="recordPaymentAmount">Amount (₹) <span class="required">*</span></label>
+                        <input type="number" id="recordPaymentAmount" class="form-control" required min="1">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="recordPaymentMethod">Payment Method <span class="required">*</span></label>
+                        <select id="recordPaymentMethod" class="form-control" required>
+                            <option value="Credit Card">Credit Card (Demo)</option>
+                            <option value="Debit Card">Debit Card (Demo)</option>
+                            <option value="UPI">UPI Instant (Demo)</option>
+                            <option value="Net Banking">Net Banking (Demo)</option>
+                            <option value="Bank Cheque">Bank Cheque (Demo)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="recordPaymentNotes">Payment Note</label>
+                        <input type="text" id="recordPaymentNotes" class="form-control" placeholder="e.g. Annual renewal installment">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="App.closeModal('recordPaymentModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Process Simulated Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PAYMENT RECEIPT MODAL -->
+    <div id="paymentReceiptModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Official Payment Receipt</h3>
+                <button class="modal-close-btn" onclick="App.closeModal('paymentReceiptModal')">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white;">
+                <div style="border: 2px dashed #CBD5E1; padding: 1.5rem; border-radius: var(--radius-md); background: #FAFBFD;">
+                    <div class="flex justify-between items-center" style="margin-bottom: 1.25rem; border-bottom: 1px solid #E2E8F0; padding-bottom: 1rem;">
+                        <div>
+                            <h4 style="font-size: 1.15rem; color: var(--primary-900);">InsureGuard Premium Receipt</h4>
+                            <div class="text-xs text-muted">Simulated Electronic Transaction</div>
+                        </div>
+                        <div class="text-right">
+                            <span id="receiptStatus" class="badge badge-successful">Successful</span>
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="gap: 1rem;">
+                        <div><span class="text-xs text-muted">Receipt ID</span><div id="receiptPaymentId" class="font-bold">-</div></div>
+                        <div><span class="text-xs text-muted">Transaction Ref</span><div id="receiptTxnRef" class="font-semibold">-</div></div>
+                        <div><span class="text-xs text-muted">Policy Number</span><div id="receiptPolicyNo" class="font-semibold">-</div></div>
+                        <div><span class="text-xs text-muted">Date &amp; Time</span><div id="receiptDate">-</div></div>
+                        <div class="col-span-full"><span class="text-xs text-muted">Policyholder</span><div id="receiptCustomer" class="font-semibold">-</div></div>
+                        <div><span class="text-xs text-muted">Payment Channel</span><div id="receiptMethod">-</div></div>
+                        <div>
+                            <span class="text-xs text-muted">Total Paid</span>
+                            <div id="receiptAmount" class="font-bold" style="font-size: 1.35rem; color: var(--success-text);">₹0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="App.closeModal('paymentReceiptModal')">Close</button>
+                <button type="button" class="btn btn-primary" onclick="window.print()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print Receipt</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         JAVASCRIPT MODULES IN ORDER
+         ========================================================================== -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/customers.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/policies.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/claims.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/testing.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
